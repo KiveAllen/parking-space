@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.allen.part.mapper.FeedbackMapper">
+
+    <resultMap id="BaseResultMap" type="com.allen.part.model.entity.Feedback">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="spaceId" column="space_id" jdbcType="INTEGER"/>
+            <result property="rating" column="rating" jdbcType="INTEGER"/>
+            <result property="commentText" column="comment_text" jdbcType="VARCHAR"/>
+            <result property="commentImage" column="comment_image" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,space_id,
+        rating,comment_text,comment_image,
+        create_time
+    </sql>
+</mapper>

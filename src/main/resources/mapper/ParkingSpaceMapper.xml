@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.allen.part.mapper.ParkingSpaceMapper">
+
+    <resultMap id="BaseResultMap" type="com.allen.part.model.entity.ParkingSpace">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="INTEGER"/>
+            <result property="latitude" column="latitude" jdbcType="DECIMAL"/>
+            <result property="longitude" column="longitude" jdbcType="DECIMAL"/>
+            <result property="addressDescription" column="address_description" jdbcType="VARCHAR"/>
+            <result property="availableTimeStart" column="available_time_start" jdbcType="TIMESTAMP"/>
+            <result property="availableTimeEnd" column="available_time_end" jdbcType="TIMESTAMP"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="priceType" column="price_type" jdbcType="TINYINT"/>
+            <result property="customTimeStart" column="custom_time_start" jdbcType="TIMESTAMP"/>
+            <result property="customTimeEnd" column="custom_time_end" jdbcType="TIMESTAMP"/>
+            <result property="isAvailable" column="is_available" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,latitude,
+        longitude,address_description,available_time_start,
+        available_time_end,price,price_type,
+        custom_time_start,custom_time_end,is_available,
+        create_time,update_time
+    </sql>
+</mapper>
