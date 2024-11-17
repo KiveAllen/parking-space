@@ -37,6 +37,17 @@ public class UserController {
 
 
     /**
+     * 获取当前登录用户
+     *
+     * @param request HTTP请求对象
+     * @return 当前登录用户的信息
+     */
+    @GetMapping("/get/login")
+    public BaseResponse<User> getLoginUser(HttpServletRequest request) {
+        return ResultUtils.success(userService.getLoginUser(request));
+    }
+
+    /**
      * 用户注册并登录
      */
     @PostMapping("/registerAndLogin")

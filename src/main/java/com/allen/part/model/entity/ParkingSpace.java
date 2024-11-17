@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -46,11 +47,13 @@ public class ParkingSpace implements Serializable {
     /**
      * 可使用起始时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date availableTimeStart;
 
     /**
      * 可使用结束时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date availableTimeEnd;
 
     /**
@@ -66,11 +69,13 @@ public class ParkingSpace implements Serializable {
     /**
      * 自定义时段的起始时间（当price_type为自定义时段时使用）
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date customTimeStart;
 
     /**
      * 自定义时段的结束时间（当price_type为自定义时段时使用）
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date customTimeEnd;
 
     /**
