@@ -28,21 +28,20 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 // 这里一定要标注你控制器的位置
-                .apis(RequestHandlerSelectors.basePackage("com.yupi.yupao.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.allen.part.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     /**
      * api 信息
-     * @return
      */
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("鱼皮用户中心")
-                .description("鱼皮用户中心接口文档")
-                .termsOfServiceUrl("https://github.com/liyupi")
-                .contact(new Contact("yupi","https://github.com/liyupi","xxx@qq.com"))
+                .title("私家车车位共享小程序")
+                .description("私家车车位共享小程序接口文档")
+                .termsOfServiceUrl("https://github.com/KiveAllen")
+                .contact(new Contact("KiveAllen", "https://github.com/KiveAllen", "xxx@qq.com"))
                 .version("1.0")
                 .build();
     }
