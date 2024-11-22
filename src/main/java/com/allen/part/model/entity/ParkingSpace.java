@@ -12,8 +12,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 
- * @TableName parking_space
+ * parking_space
  */
 @TableName(value ="parking_space")
 @Data
@@ -45,16 +44,9 @@ public class ParkingSpace implements Serializable {
     private String addressDescription;
 
     /**
-     * 可使用起始时间
+     * 车位编号
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date availableTimeStart;
-
-    /**
-     * 可使用结束时间
-     */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date availableTimeEnd;
+    private String partNumber;
 
     /**
      * 共享价格

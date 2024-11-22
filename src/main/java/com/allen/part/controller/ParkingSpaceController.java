@@ -110,10 +110,6 @@ public class ParkingSpaceController {
                                 ParkingSpace::getIsAvailable, parkingSpaceQueryRequest.getIsAvailable())
                         .eq(parkingSpaceQueryRequest.getPriceType() != null,
                                 ParkingSpace::getPriceType, parkingSpaceQueryRequest.getPriceType())
-                        .between(parkingSpaceQueryRequest.getLatUp() != null && parkingSpaceQueryRequest.getLatDown() != null,
-                                ParkingSpace::getLatitude, parkingSpaceQueryRequest.getLatUp(), parkingSpaceQueryRequest.getLatDown())
-                        .between(parkingSpaceQueryRequest.getLonUp() != null && parkingSpaceQueryRequest.getLonDown() != null,
-                                ParkingSpace::getLongitude, parkingSpaceQueryRequest.getLonUp(), parkingSpaceQueryRequest.getLonDown())
                         .orderByDesc(ParkingSpace::getUpdateTime)
 
         );
