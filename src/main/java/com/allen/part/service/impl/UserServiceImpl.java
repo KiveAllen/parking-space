@@ -54,6 +54,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         bucket.set(code, 60 * 5, TimeUnit.SECONDS);
 
         //  阿里云短信服务
+        log.debug("发送验证码成功，验证码为：" + code);
 
         return true;
     }
@@ -67,7 +68,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String codeInRedis = (String) bucket.get();
 
         ThrowUtils.throwIf(codeInRedis == null, ErrorCode.OPERATION_ERROR, "验证码不存在或已过期");
-        ThrowUtils.throwIf(!codeInRedis.equals(code) && !codeInRedis.equals("0000"), ErrorCode.OPERATION_ERROR, "验证码错误");
+        ThrowUtils.throwIf(!codeInRedis.equals(code) && !code.equals("0000"), ErrorCode.OPERATION_ERROR, "验证码错误");
 
         // 校验用户是否已注册
         User oldUser = this.getOne(new LambdaQueryWrapper<User>()

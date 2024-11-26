@@ -10,7 +10,6 @@ import com.allen.part.exception.ThrowUtils;
 import com.allen.part.model.dto.user.UserAddRequest;
 import com.allen.part.model.dto.user.UserQueryRequest;
 import com.allen.part.model.dto.user.UserRegisterAndLoginRequest;
-import com.allen.part.model.dto.user.UserUpdateRequest;
 import com.allen.part.model.entity.User;
 import com.allen.part.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -22,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
+import static com.allen.part.constant.UserConstant.USER_LOGIN_STATE;
 
 /**
  * 用户接口
@@ -113,8 +114,13 @@ public class UserController {
      * 更新用户
      */
     @PostMapping("/update")
-    public BaseResponse<Boolean> updateUser(@RequestBody User user) {
-        return ResultUtils.success(userService.updateById(user));
+    public BaseResponse<Boolean> updateUser(@RequestBody User user, HttpServletRequest request) {
+        boolean updateById = userService.updateById(user);
+        if (updateById) {
+            user = userService.getById(user.getId());
+            request.getSession().setAttribute(USER_LOGIN_STATE, user);
+        }
+        return ResultUtils.success(updateById);
     }
 
     /**
