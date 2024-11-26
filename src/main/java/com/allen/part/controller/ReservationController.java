@@ -105,9 +105,12 @@ public class ReservationController {
         // 查询数据库
         Page<Reservation> reservationPage = reservationService.page(new Page<>(current, size),
                 new LambdaQueryWrapper<Reservation>()
-                        .eq(reservationQueryRequest.getUserId() != null, Reservation::getUserId, reservationQueryRequest.getUserId())
-                        .eq(reservationQueryRequest.getOwnerId() != null, Reservation::getSpaceId, reservationQueryRequest.getOwnerId())
-                        .eq(reservationQueryRequest.getReservationStatus() != null, Reservation::getReservationStatus, reservationQueryRequest.getReservationStatus())
+                        .eq(reservationQueryRequest.getUserId() != null,
+                                Reservation::getUserId, reservationQueryRequest.getUserId())
+                        .eq(reservationQueryRequest.getOwnerId() != null,
+                                Reservation::getOwnerId, reservationQueryRequest.getOwnerId())
+                        .eq(reservationQueryRequest.getReservationStatus() != null,
+                                Reservation::getReservationStatus, reservationQueryRequest.getReservationStatus())
 
         );
         return ResultUtils.success(reservationPage);

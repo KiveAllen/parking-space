@@ -24,6 +24,11 @@ public class Reservation implements Serializable {
     private Integer id;
 
     /**
+     * 订单名称
+     */
+    private String name;
+
+    /**
      * 预订车位的租客用户ID
      */
     private Integer userId;

@@ -15,6 +15,11 @@ import java.io.Serializable;
 public class ParkingSpaceQueryRequest extends PageRequest implements Serializable {
 
     /**
+     * 搜索关键词
+     */
+    private String searchText;
+
+    /**
      * 关联发布车位的车主用户ID
      */
     private Integer userId;

@@ -110,6 +110,8 @@ public class ParkingSpaceController {
                                 ParkingSpace::getIsAvailable, parkingSpaceQueryRequest.getIsAvailable())
                         .eq(parkingSpaceQueryRequest.getPriceType() != null,
                                 ParkingSpace::getPriceType, parkingSpaceQueryRequest.getPriceType())
+                        .like(!parkingSpaceQueryRequest.getSearchText().isEmpty(),
+                                ParkingSpace::getAddressDescription, parkingSpaceQueryRequest.getSearchText())
                         .orderByDesc(ParkingSpace::getUpdateTime)
 
         );
