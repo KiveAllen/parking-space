@@ -86,7 +86,7 @@ public class ReservationController {
      * 根据 id 获取订单
      */
     @GetMapping("/get")
-    public BaseResponse<Reservation> getReservationVOById(long id) {
+    public BaseResponse<Reservation> getReservationById(long id) {
         ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
         // 查询数据库
         Reservation reservation = reservationService.getById(id);

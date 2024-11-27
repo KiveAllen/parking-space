@@ -46,7 +46,7 @@ public class ParkingSpace implements Serializable {
     /**
      * 车位编号
      */
-    private String partNumber;
+    private String parkNumber;
 
     /**
      * 共享价格
@@ -61,19 +61,24 @@ public class ParkingSpace implements Serializable {
     /**
      * 自定义时段的起始时间（当price_type为自定义时段时使用）
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private Date customTimeStart;
 
     /**
      * 自定义时段的结束时间（当price_type为自定义时段时使用）
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private Date customTimeEnd;
 
     /**
      * 车位是否可预订，默认是可预订状态
      */
     private Integer isAvailable;
+
+    /**
+     * 车位图片
+     */
+    private String parkPhoto;
 
     /**
      * 

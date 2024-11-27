@@ -52,7 +52,6 @@ public class ParkingSpaceController {
         // 返回新写入的数据 id
         long newParkingSpaceId = parkingSpace.getId();
         return ResultUtils.success(newParkingSpaceId);
-
     }
 
     /**
@@ -89,9 +88,10 @@ public class ParkingSpaceController {
      * 根据 id 获取车位
      */
     @GetMapping("/get")
-    public BaseResponse<ParkingSpace> getParkingSpaceVOById(long id) {
+    public BaseResponse<ParkingSpace> getParkingSpaceById(long id) {
         ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
-        return ResultUtils.success(parkingSpaceService.getById(id));
+        ParkingSpace service = parkingSpaceService.getById(id);
+        return ResultUtils.success(service);
     }
 
     /**
@@ -110,7 +110,8 @@ public class ParkingSpaceController {
                                 ParkingSpace::getIsAvailable, parkingSpaceQueryRequest.getIsAvailable())
                         .eq(parkingSpaceQueryRequest.getPriceType() != null,
                                 ParkingSpace::getPriceType, parkingSpaceQueryRequest.getPriceType())
-                        .like(!parkingSpaceQueryRequest.getSearchText().isEmpty(),
+                        .like(parkingSpaceQueryRequest.getSearchText() != null
+                              && !parkingSpaceQueryRequest.getSearchText().isEmpty(),
                                 ParkingSpace::getAddressDescription, parkingSpaceQueryRequest.getSearchText())
                         .orderByDesc(ParkingSpace::getUpdateTime)
 
