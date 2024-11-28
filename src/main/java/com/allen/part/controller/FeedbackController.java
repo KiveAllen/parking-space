@@ -16,10 +16,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -96,6 +93,20 @@ public class FeedbackController {
                         .eq(Feedback::getSpaceId, feedbackQueryRequest.getSpaceId())
         );
         return ResultUtils.success(feedbackPage);
+    }
+
+    /**
+     * 获取评论
+     */
+    @PostMapping("/get")
+    public BaseResponse<Feedback> getFeedbackById(@RequestParam long reservationId) {
+        if (reservationId <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Feedback feedback = feedbackService.getOne(new LambdaQueryWrapper<Feedback>()
+                .eq(Feedback::getReservationId, reservationId)
+        );
+        return ResultUtils.success(feedback);
     }
 
 }

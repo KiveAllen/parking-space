@@ -18,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 车位接口
@@ -116,6 +120,20 @@ public class ParkingSpaceController {
                         .orderByDesc(ParkingSpace::getUpdateTime)
 
         );
+        BigDecimal longitude = parkingSpaceQueryRequest.getLongitude();
+        BigDecimal latitude = parkingSpaceQueryRequest.getLatitude();
+
+        // 通过经纬度计算最近距离排序
+        List<ParkingSpace> sortedRecords = parkingSpacePage.getRecords().stream()
+                .peek(parkingSpace -> {
+                    BigDecimal distance = parkingSpaceService.getDistance(longitude, latitude, parkingSpace.getLongitude(), parkingSpace.getLatitude());
+                    parkingSpace.setDistance(distance);
+                })
+                .sorted(Comparator.comparing(ParkingSpace::getDistance))
+                .collect(Collectors.toList());
+
+        // 更新分页结果中的记录
+        parkingSpacePage.setRecords(sortedRecords);
         return ResultUtils.success(parkingSpacePage);
     }
 

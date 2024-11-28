@@ -5,7 +5,10 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -15,6 +18,9 @@ import java.util.Date;
  * parking_space
  */
 @TableName(value ="parking_space")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class ParkingSpace implements Serializable {
     /**
@@ -89,6 +95,11 @@ public class ParkingSpace implements Serializable {
      * 
      */
     private Date updateTime;
+
+    /**
+     * Distance
+     */
+    private BigDecimal distance;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

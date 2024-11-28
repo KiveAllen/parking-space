@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * 查询车位请求
@@ -18,7 +19,6 @@ public class ParkingSpaceQueryRequest extends PageRequest implements Serializabl
      * 搜索关键词
      */
     private String searchText;
-
     /**
      * 关联发布车位的车主用户ID
      */
@@ -31,6 +31,14 @@ public class ParkingSpaceQueryRequest extends PageRequest implements Serializabl
      * 车位是否可预订，默认是可预订状态
      */
     private Integer isAvailable;
+    /**
+     * 用户经度
+     */
+    private BigDecimal longitude;
+    /**
+     * 用户纬度
+     */
+    private BigDecimal latitude;
 
     private static final long serialVersionUID = 1L;
 }

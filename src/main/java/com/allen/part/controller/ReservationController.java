@@ -7,8 +7,10 @@ import com.allen.part.common.ResultUtils;
 import com.allen.part.exception.BusinessException;
 import com.allen.part.exception.ThrowUtils;
 import com.allen.part.model.dto.reservation.ReservationQueryRequest;
+import com.allen.part.model.entity.ParkingSpace;
 import com.allen.part.model.entity.Reservation;
 import com.allen.part.model.entity.User;
+import com.allen.part.service.ParkingSpaceService;
 import com.allen.part.service.ReservationService;
 import com.allen.part.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -33,6 +35,8 @@ public class ReservationController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private ParkingSpaceService parkingSpaceService;
 
     /**
      * 创建订单
@@ -46,6 +50,14 @@ public class ReservationController {
         // 写入数据库
         boolean result = reservationService.save(reservation);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
+
+        // 更新车位状态
+        ParkingSpace parkingSpace = ParkingSpace.builder()
+                .id(reservation.getSpaceId())
+                .isAvailable(0)
+                .build();
+        parkingSpaceService.updateById(parkingSpace);
+
         // 返回新写入的数据 id
         long newReservationId = reservation.getId();
         return ResultUtils.success(newReservationId);
@@ -79,6 +91,14 @@ public class ReservationController {
         // 操作数据库
         boolean result = reservationService.updateById(reservation);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
+
+        // 更新车位状态
+        ParkingSpace parkingSpace = ParkingSpace.builder()
+                .id(reservation.getSpaceId())
+                .isAvailable(1)
+                .build();
+        parkingSpaceService.updateById(parkingSpace);
+
         return ResultUtils.success(true);
     }
 

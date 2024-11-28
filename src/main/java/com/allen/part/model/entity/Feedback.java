@@ -52,6 +52,11 @@ public class Feedback implements Serializable {
      */
     private Date createTime;
 
+    /**
+     * reservation_id
+     */
+    private Integer reservationId;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

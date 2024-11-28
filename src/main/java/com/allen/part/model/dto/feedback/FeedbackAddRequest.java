@@ -3,7 +3,6 @@ package com.allen.part.model.dto.feedback;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 创建评论请求
@@ -31,6 +30,11 @@ public class FeedbackAddRequest implements Serializable {
      * 上传的评价图片链接（如果有）
      */
     private String commentImage;
+
+    /**
+     * 评价关联的预约记录ID
+     */
+    private Integer reservationId;
 
     private static final long serialVersionUID = 1L;
 }
