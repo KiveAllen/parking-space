@@ -98,7 +98,7 @@ public class FeedbackController {
     /**
      * 获取评论
      */
-    @PostMapping("/get")
+    @GetMapping("/get")
     public BaseResponse<Feedback> getFeedbackById(@RequestParam long reservationId) {
         if (reservationId <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
