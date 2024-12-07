@@ -7,6 +7,7 @@ import com.allen.part.common.ResultUtils;
 import com.allen.part.exception.BusinessException;
 import com.allen.part.exception.ThrowUtils;
 import com.allen.part.model.dto.feedback.FeedbackAddRequest;
+import com.allen.part.model.dto.feedback.FeedbackDTO;
 import com.allen.part.model.dto.feedback.FeedbackQueryRequest;
 import com.allen.part.model.entity.Feedback;
 import com.allen.part.model.entity.User;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 评论接口
@@ -84,7 +86,7 @@ public class FeedbackController {
      * 分页获取评论列表
      */
     @PostMapping("/list/page")
-    public BaseResponse<Page<Feedback>> listFeedbackByPage(@RequestBody FeedbackQueryRequest feedbackQueryRequest) {
+    public BaseResponse<Page<FeedbackDTO>> listFeedbackByPage(@RequestBody FeedbackQueryRequest feedbackQueryRequest) {
         long current = feedbackQueryRequest.getPageNum();
         long size = feedbackQueryRequest.getPageSize();
         // 查询数据库
@@ -92,7 +94,30 @@ public class FeedbackController {
                 new LambdaQueryWrapper<Feedback>()
                         .eq(Feedback::getSpaceId, feedbackQueryRequest.getSpaceId())
         );
-        return ResultUtils.success(feedbackPage);
+
+        if (feedbackPage.getTotal() == 0) {
+            Page<FeedbackDTO> feedbackDTOPage = new Page<>(current, size, 0);
+            return ResultUtils.success(feedbackDTOPage);
+        }
+
+        List<Feedback> records = feedbackPage.getRecords();
+        List<Integer> userIds = records.stream().map(Feedback::getUserId).toList();
+        List<User> userList = userService.listByIds(userIds);
+
+        List<FeedbackDTO> feedbackDTOList = records.stream().map(feedback -> {
+            FeedbackDTO feedbackDTO = new FeedbackDTO();
+            BeanUtils.copyProperties(feedback, feedbackDTO);
+            userList.stream().filter(user -> user.getId().equals(feedback.getUserId())).findFirst().ifPresent(user -> {
+                feedbackDTO.setName(user.getName());
+                feedbackDTO.setAvatar(user.getAvatar());
+            });
+            return feedbackDTO;
+        }).toList();
+
+        Page<FeedbackDTO> feedbackDTOPage = new Page<>(current, size, feedbackPage.getTotal());
+        feedbackDTOPage.setRecords(feedbackDTOList);
+
+        return ResultUtils.success(feedbackDTOPage);
     }
 
     /**

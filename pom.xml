@@ -15,7 +15,7 @@
     <name>parking-space</name>
     <description>parking-space</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <!-- https://hutool.cn/docs/index.html#/-->

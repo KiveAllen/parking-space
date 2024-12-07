@@ -131,6 +131,7 @@ public class ReservationController {
                                 Reservation::getOwnerId, reservationQueryRequest.getOwnerId())
                         .eq(reservationQueryRequest.getReservationStatus() != null,
                                 Reservation::getReservationStatus, reservationQueryRequest.getReservationStatus())
+                        .orderByDesc(Reservation::getCreateTime)
 
         );
         return ResultUtils.success(reservationPage);
