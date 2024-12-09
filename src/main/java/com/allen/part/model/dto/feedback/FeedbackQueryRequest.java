@@ -4,8 +4,8 @@ import com.allen.part.common.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 查询评论请求
@@ -21,5 +21,6 @@ public class FeedbackQueryRequest extends PageRequest implements Serializable {
     private Integer spaceId;
 
 
+    @Serial
     private static final long serialVersionUID = 1L;
 }
