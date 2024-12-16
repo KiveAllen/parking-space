@@ -6,6 +6,7 @@ import com.allen.part.common.ErrorCode;
 import com.allen.part.common.ResultUtils;
 import com.allen.part.exception.BusinessException;
 import com.allen.part.exception.ThrowUtils;
+import com.allen.part.model.dto.reservation.ReservationListDTO;
 import com.allen.part.model.dto.reservation.ReservationQueryRequest;
 import com.allen.part.model.entity.ParkingSpace;
 import com.allen.part.model.entity.Reservation;
@@ -16,10 +17,14 @@ import com.allen.part.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 订单接口
@@ -119,7 +124,7 @@ public class ReservationController {
      * 分页获取订单列表
      */
     @PostMapping("/list/page")
-    public BaseResponse<Page<Reservation>> listReservationByPage(@RequestBody ReservationQueryRequest reservationQueryRequest) {
+    public BaseResponse<Page<ReservationListDTO>> listReservationByPage(@RequestBody ReservationQueryRequest reservationQueryRequest) {
         long current = reservationQueryRequest.getPageNum();
         long size = reservationQueryRequest.getPageSize();
         // 查询数据库
@@ -132,9 +137,40 @@ public class ReservationController {
                         .eq(reservationQueryRequest.getReservationStatus() != null,
                                 Reservation::getReservationStatus, reservationQueryRequest.getReservationStatus())
                         .orderByDesc(Reservation::getCreateTime)
-
         );
-        return ResultUtils.success(reservationPage);
+
+        List<Reservation> records = reservationPage.getRecords();
+
+        if (records.isEmpty()) {
+            Page<ReservationListDTO> reservationDTOPage = new Page<>(current, size, 0);
+            return ResultUtils.success(reservationDTOPage);
+        }
+        Page<ReservationListDTO> reservationDTOPage = new Page<>(current, size, reservationPage.getPages());
+
+        List<Integer> userIds = records.stream().map(Reservation::getUserId).toList();
+        List<Integer> ownerIds = records.stream().map(Reservation::getOwnerId).toList();
+        List<Integer> spaceIds = records.stream().map(Reservation::getSpaceId).toList();
+
+        List<User> users = userService.listByIds(userIds);
+        Map<Integer, User> userMap = users.stream().collect(Collectors.toMap(User::getId, user -> user));
+        List<User> owners = userService.listByIds(ownerIds);
+        Map<Integer, User> ownerMap = owners.stream().collect(Collectors.toMap(User::getId, owner -> owner));
+        List<ParkingSpace> parkingSpaces = parkingSpaceService.listByIds(spaceIds);
+        Map<Integer, ParkingSpace> parkingSpaceMap = parkingSpaces.stream().collect(Collectors.toMap(ParkingSpace::getId, parkingSpace -> parkingSpace));
+
+
+        List<ReservationListDTO> reservationListDTOS = records.stream().map(reservation -> {
+            ReservationListDTO reservationListDTO = new ReservationListDTO();
+            BeanUtils.copyProperties(reservation, reservationListDTO);
+            reservationListDTO.setUserName(userMap.get(reservation.getUserId()).getName());
+            reservationListDTO.setOwnerName(ownerMap.get(reservation.getOwnerId()).getName());
+            reservationListDTO.setParkingSpacePhoto(parkingSpaceMap.get(reservation.getSpaceId()).getParkPhoto());
+            return reservationListDTO;
+        }).toList();
+
+        reservationDTOPage.setRecords(reservationListDTOS);
+
+        return ResultUtils.success(reservationDTOPage);
     }
 
 }
